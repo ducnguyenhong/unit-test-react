@@ -1,8 +1,10 @@
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
+import axios from 'axios';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import Component from './component';
+import { User } from './component.type';
 
 const server = setupServer(
   http.get('/user/info', () => {
@@ -24,11 +26,7 @@ const server = setupServer(
     });
   }),
   http.get('/user/error', () => {
-    return HttpResponse.json({
-      message: 'Unauthorized',
-      data: null,
-      status: 401
-    });
+    return HttpResponse.error();
   })
 );
 
@@ -36,26 +34,30 @@ beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
+const getData = (url: string) => {
+  return axios.get(url).then((response) => response.data as User);
+};
+
 it('Test component case 1: Has data', async () => {
-  const { findByTestId } = render(<Component apiTestUrl="/user/info" />);
+  const { findByTestId } = render(<Component loaderTest={() => getData('/user/info')} />);
   const componentHasData = await findByTestId('has-data');
   expect(componentHasData).toBeInTheDocument();
 });
 
 it('Test component case 2: Has loading', async () => {
-  const { findByTestId } = render(<Component apiTestUrl="/user/info" />);
+  const { findByTestId } = render(<Component loaderTest={() => getData('/user/info')} />);
   const componentHasData = await findByTestId('loading');
   expect(componentHasData).toBeInTheDocument();
 });
 
 it('Test component case 3: Empty data', async () => {
-  const { findByTestId } = render(<Component apiTestUrl="/user/empty" />);
+  const { findByTestId } = render(<Component loaderTest={() => getData('/user/empty')} />);
   const componentHasData = await findByTestId('loading');
   expect(componentHasData).toBeInTheDocument();
 });
 
 it('Test component case 4: Has error', async () => {
-  const { findByTestId } = render(<Component apiTestUrl="/user/error" />);
-  const componentHasData = await findByTestId('loading');
+  const { findByTestId } = render(<Component loaderTest={() => getData('/user/error')} />);
+  const componentHasData = await findByTestId('error');
   expect(componentHasData).toBeInTheDocument();
 });

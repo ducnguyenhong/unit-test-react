@@ -1,32 +1,25 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { User } from './component.type';
 
 interface ComponentProps {
-  apiTestUrl?: string;
+  loaderTest?: () => Promise<User>;
 }
 
 const Component: React.FC<ComponentProps> = (props) => {
-  const { apiTestUrl } = props;
+  const { loaderTest } = props;
   const [data, setData] = useState<User | undefined>();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | undefined>();
 
   useEffect(() => {
-    if (!data) {
+    if (loaderTest) {
       setLoading(true);
-      axios
-        .get(apiTestUrl || '/')
-        .then((response) => {
-          setData(response.data?.data);
-          setLoading(false);
-        })
-        .catch((e) => {
-          setError(e);
-          setLoading(false);
-        });
+      loaderTest()
+        .then((user) => setData(user))
+        .catch((e) => setError(e))
+        .finally(() => setLoading(false));
     }
-  }, [data, apiTestUrl]);
+  }, [loaderTest]);
 
   if (loading) {
     return <div data-testid="loading">Loading...</div>;

@@ -1,11 +1,9 @@
 import { getTotalPrice, sum } from './functions';
 
-// Test sum
 it('Test function case 1: Sum', () => {
   expect(sum(1, 2)).toBe(3);
 });
 
-// Test total price
 it('Test function case 2: Total price', () => {
   const orderList = [
     {
