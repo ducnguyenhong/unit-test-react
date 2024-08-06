@@ -1,30 +1,31 @@
-# React + TypeScript + Vite
+# Unit Testing with ReactJS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Technologies:
 
-Currently, two official plugins are available:
+- ReactJS, Typescript, Jest, React Testing Library, MSW...
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Test function:
 
-## Expanding the ESLint configuration
+Code: **`src/test-function`**
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Function to calculate sum of 2 numbers
+- Function to calculate total amount of order
 
-- Configure the top-level `parserOptions` property like this:
+## Test component:
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json', './tsconfig.app.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+Code: **`src/test-component`**
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- Test component has data
+- Test component has loading
+- Test component empty data
+- Test component has error
+
+## Usage
+
+**`yarn install`**
+
+**`yarn test`**
+
+## Results
+
+![Test results](/public/results.png 'Test results')
